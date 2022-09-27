@@ -77,7 +77,7 @@ public class AllForLoopBenchmark
 ```
 
 The Result:
-```bash
+```csharp
 |               Method | ItemCount |         Mean |       Error |       StdDev |       Median | Allocated |
 |--------------------- |---------- |-------------:|------------:|-------------:|-------------:|----------:|
 |                  For |      1000 |     809.5 ns |    46.99 ns |    137.08 ns |     745.4 ns |         - |
