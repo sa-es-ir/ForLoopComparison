@@ -76,7 +76,7 @@ public class AllForLoopBenchmark
 }
 ```
 
-The Result:
+The benchmark Result:
 ```csharp
 |               Method | ItemCount |         Mean |       Error |       StdDev |       Median | Allocated |
 |--------------------- |---------- |-------------:|------------:|-------------:|-------------:|----------:|
