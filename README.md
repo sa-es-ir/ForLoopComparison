@@ -1,4 +1,4 @@
-# A comparison of For loops in c#
+# A comparison of all For loops in c#
 ```csharp 
 [MemoryDiagnoser(false)]
 public class AllForLoopBenchmark
