@@ -2,9 +2,12 @@
 This project is only for curiosity :)
 ```csharp 
 [MemoryDiagnoser(false)]
+[SimpleJob(RuntimeMoniker.Net60)]
+[SimpleJob(RuntimeMoniker.Net80)]
+[SimpleJob(RuntimeMoniker.Net90)]
 public class AllForLoopBenchmark
 {
-    [Params(1000, 10_000, 100_000)]
+    [Params(100_000)]
     public int ItemCount { get; set; }
 
     private List<int> _items;
@@ -79,27 +82,27 @@ public class AllForLoopBenchmark
 
 ## Benchmark Result:
 ```csharp
-|               Method | ItemCount |         Mean |       Error |       StdDev |       Median | Allocated |
-|--------------------- |---------- |-------------:|------------:|-------------:|-------------:|----------:|
-|                  For |      1000 |     809.5 ns |    46.99 ns |    137.08 ns |     745.4 ns |         - |
-|              ForEach |      1000 |   1,051.8 ns |    20.76 ns |     41.93 ns |   1,043.6 ns |         - |
-|         ForEach_Linq |      1000 |   3,674.8 ns |    71.84 ns |    111.84 ns |   3,653.3 ns |      64 B |
-|     ForEach_Parallel |      1000 |   9,445.2 ns |    78.39 ns |     73.33 ns |   9,423.6 ns |    2202 B |
-| ForEach_LinqParallel |      1000 |  13,245.2 ns |   264.20 ns |    533.70 ns |  13,261.8 ns |    2904 B |
-|             For_Span |      1000 |     702.9 ns |     9.86 ns |      8.74 ns |     700.0 ns |         - |
-|         ForEach_Span |      1000 |     791.3 ns |    17.23 ns |     50.79 ns |     790.0 ns |         - |
-|                  For |     10000 |  11,752.6 ns |   230.83 ns |    323.59 ns |  11,682.0 ns |         - |
-|              ForEach |     10000 |  16,554.0 ns |   442.16 ns |  1,303.72 ns |  16,730.6 ns |         - |
-|         ForEach_Linq |     10000 |  43,653.7 ns | 1,291.37 ns |  3,807.63 ns |  42,947.3 ns |      64 B |
-|     ForEach_Parallel |     10000 |  53,834.0 ns | 1,072.38 ns |  3,161.94 ns |  53,535.9 ns |    2218 B |
-| ForEach_LinqParallel |     10000 |  61,958.7 ns | 1,228.99 ns |  3,506.39 ns |  61,623.8 ns |    2904 B |
-|             For_Span |     10000 |   7,900.8 ns |   156.28 ns |    269.58 ns |   7,872.7 ns |         - |
-|         ForEach_Span |     10000 |   7,818.2 ns |   144.31 ns |    319.78 ns |   7,703.8 ns |         - |
-|                  For |    100000 |  98,984.3 ns | 4,551.07 ns | 13,418.92 ns |  98,272.7 ns |         - |
-|              ForEach |    100000 | 160,831.6 ns | 5,814.17 ns | 17,143.22 ns | 157,615.5 ns |         - |
-|         ForEach_Linq |    100000 | 428,260.2 ns | 7,608.56 ns |  7,117.05 ns | 427,985.6 ns |      64 B |
-|     ForEach_Parallel |    100000 | 414,901.2 ns | 8,142.42 ns | 14,260.79 ns | 412,322.3 ns |    2292 B |
-| ForEach_LinqParallel |    100000 | 492,701.4 ns | 9,754.53 ns | 19,480.85 ns | 492,097.3 ns |    2919 B |
-|             For_Span |    100000 |  69,455.3 ns |   921.59 ns |    769.57 ns |  69,499.4 ns |         - |
-|         ForEach_Span |    100000 |  69,146.4 ns |   630.21 ns |    589.50 ns |  69,162.3 ns |         - |
+| Method               | Job      | Runtime  | ItemCount | Mean      | Error    | StdDev   | Allocated |
+|--------------------- |--------- |--------- |---------- |----------:|---------:|---------:|----------:|
+| For                  | .NET 6.0 | .NET 6.0 | 100000    |  38.25 us | 0.242 us | 0.202 us |         - |
+| For                  | .NET 8.0 | .NET 8.0 | 100000    |  36.58 us | 0.098 us | 0.087 us |         - |
+| For                  | .NET 9.0 | .NET 9.0 | 100000    |  36.59 us | 0.103 us | 0.092 us |         - |
+| ForEach              | .NET 6.0 | .NET 6.0 | 100000    |  60.99 us | 0.184 us | 0.163 us |         - |
+| ForEach              | .NET 8.0 | .NET 8.0 | 100000    |  36.58 us | 0.158 us | 0.132 us |         - |
+| ForEach              | .NET 9.0 | .NET 9.0 | 100000    |  36.47 us | 0.134 us | 0.118 us |         - |
+| ForEach_Linq         | .NET 6.0 | .NET 6.0 | 100000    | 146.08 us | 0.511 us | 0.453 us |      64 B |
+| ForEach_Linq         | .NET 8.0 | .NET 8.0 | 100000    |  48.78 us | 0.063 us | 0.053 us |      64 B |
+| ForEach_Linq         | .NET 9.0 | .NET 9.0 | 100000    |  48.98 us | 0.111 us | 0.098 us |      64 B |
+| ForEach_Parallel     | .NET 6.0 | .NET 6.0 | 100000    | 132.79 us | 1.509 us | 1.337 us |    3135 B |
+| ForEach_Parallel     | .NET 8.0 | .NET 8.0 | 100000    |  90.47 us | 0.337 us | 0.315 us |    3206 B |
+| ForEach_Parallel     | .NET 9.0 | .NET 9.0 | 100000    |  95.16 us | 0.277 us | 0.216 us |    3207 B |
+| ForEach_LinqParallel | .NET 6.0 | .NET 6.0 | 100000    | 170.72 us | 1.645 us | 1.539 us |    4156 B |
+| ForEach_LinqParallel | .NET 8.0 | .NET 8.0 | 100000    | 104.26 us | 2.008 us | 1.879 us |    4210 B |
+| ForEach_LinqParallel | .NET 9.0 | .NET 9.0 | 100000    | 116.52 us | 0.587 us | 0.549 us |    4215 B |
+| For_Span             | .NET 6.0 | .NET 6.0 | 100000    |  32.10 us | 0.164 us | 0.146 us |         - |
+| For_Span             | .NET 8.0 | .NET 8.0 | 100000    |  32.00 us | 0.097 us | 0.081 us |         - |
+| For_Span             | .NET 9.0 | .NET 9.0 | 100000    |  26.42 us | 0.206 us | 0.193 us |         - |
+| ForEach_Span         | .NET 6.0 | .NET 6.0 | 100000    |  32.01 us | 0.061 us | 0.057 us |         - |
+| ForEach_Span         | .NET 8.0 | .NET 8.0 | 100000    |  31.96 us | 0.071 us | 0.063 us |         - |
+| ForEach_Span         | .NET 9.0 | .NET 9.0 | 100000    |  26.21 us | 0.046 us | 0.041 us |         - |
 ```
