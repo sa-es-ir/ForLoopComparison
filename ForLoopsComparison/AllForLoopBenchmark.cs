@@ -1,20 +1,24 @@
-﻿using System.Runtime.InteropServices;
-using BenchmarkDotNet.Attributes;
+﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Jobs;
+using System.Runtime.InteropServices;
 
 namespace ForLoopsComparison;
 
 [MemoryDiagnoser(false)]
+[SimpleJob(RuntimeMoniker.Net70)]
+[SimpleJob(RuntimeMoniker.Net80)]
+[SimpleJob(RuntimeMoniker.Net90)]
 public class AllForLoopBenchmark
 {
-    [Params(1000, 10_000, 100_000)]
+    [Params(100_000)]
     public int ItemCount { get; set; }
 
-    private List<int> _items;
+    public List<int> Items;
 
     [GlobalSetup]
     public void GlobalSetup()
     {
-        _items = Enumerable.Range(0, ItemCount).ToList();
+        Items = Enumerable.Range(0, ItemCount).ToList();
     }
 
     [Benchmark]
@@ -22,14 +26,14 @@ public class AllForLoopBenchmark
     {
         for (int i = 0; i < ItemCount; i++)
         {
-            DoSomeThing(_items[i]);
+            DoSomeThing(Items[i]);
         }
     }
 
     [Benchmark]
     public void ForEach()
     {
-        foreach (var item in _items)
+        foreach (var item in Items)
         {
             DoSomeThing(item);
         }
@@ -38,25 +42,25 @@ public class AllForLoopBenchmark
     [Benchmark]
     public void ForEach_Linq()
     {
-        _items.ForEach(DoSomeThing);
+        Items.ForEach(DoSomeThing);
     }
 
     [Benchmark]
     public void ForEach_Parallel()
     {
-        Parallel.ForEach(_items, DoSomeThing);
+        Parallel.ForEach(Items, DoSomeThing);
     }
 
     [Benchmark]
     public void ForEach_LinqParallel()
     {
-        _items.AsParallel().ForAll(DoSomeThing);
+        Items.AsParallel().ForAll(DoSomeThing);
     }
 
     [Benchmark]
     public void For_Span()
     {
-        var span = CollectionsMarshal.AsSpan(_items);
+        var span = CollectionsMarshal.AsSpan(Items);
         for (int i = 0; i < span.Length; i++)
         {
             DoSomeThing(span[i]);
@@ -66,7 +70,7 @@ public class AllForLoopBenchmark
     [Benchmark]
     public void ForEach_Span()
     {
-        foreach (var item in CollectionsMarshal.AsSpan(_items))
+        foreach (var item in CollectionsMarshal.AsSpan(Items))
         {
             DoSomeThing(item);
         }
